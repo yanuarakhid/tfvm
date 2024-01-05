@@ -22,3 +22,22 @@ resource "google_compute_firewall" "rules" {
   }
   source_ranges = ["35.235.240.0/20", "10.255.215.0/24"]
 }
+
+resource "google_compute_router" "router" {
+  name    = "my-router-tf"
+  region  = google_compute_subnetwork.subnet.region
+  network = google_compute_network.net.id
+}
+
+resource "google_compute_router_nat" "nat" {
+  name                               = "my-router-tf-nat"
+  router                             = google_compute_router.router.name
+  region                             = google_compute_router.router.region
+  nat_ip_allocate_option             = "AUTO_ONLY"
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+
+  log_config {
+    enable = true
+    filter = "ERRORS_ONLY"
+  }
+}

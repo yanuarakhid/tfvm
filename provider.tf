@@ -28,5 +28,6 @@ terraform {
 provider "google" {
   # credentials = file("datalabs-hs-4c5de465c0d5.json") #Project A
   region  = "asia-southeast1"
-  project = "serviceprojecta-375207"
+  zone    = "asia-southeast1-b"
+  project = "booming-splicer-407713"
 }

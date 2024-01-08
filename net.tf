@@ -5,7 +5,7 @@ resource "google_compute_network" "vpc-vm-tf" {
 
 resource "google_compute_subnetwork" "network-tf-subnet" {
   name          = "network-tf-subnet"
-  ip_cidr_range = "10.255.210.0/24"
+  ip_cidr_range = "192.168.88.0/24"
   network       = google_compute_network.vpc-vm-tf.name
   region        = "asia-southeast1"
 }
@@ -20,13 +20,13 @@ resource "google_compute_firewall" "rules" {
   allow {
     protocol = "icmp"
   }
-  source_ranges = ["35.235.240.0/20", "10.255.215.0/24"]
+  source_ranges = ["35.235.240.0/20", "192.168.88.0/24"]
 }
 
 resource "google_compute_router" "router" {
   name    = "my-router-tf"
-  region  = google_compute_subnetwork.subnet.region
-  network = google_compute_network.net.id
+  region  = google_compute_subnetwork.network-tf-subnet.region
+  network = google_compute_network.vpc-vm-tf.name
 }
 
 resource "google_compute_router_nat" "nat" {
